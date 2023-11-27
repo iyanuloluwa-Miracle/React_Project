@@ -1,12 +1,28 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BsCalendar2Check } from "react-icons/bs";
-import { Container, Row, Col, Card, ListGroup, ListGroupItem  } from "react-bootstrap";
+import { Container, Row, Col, Card, ListGroup } from "react-bootstrap";
 import Search from "./components/Search";
 import AddAppointment from "./components/AddAppointments";
-import appointmentList from '../data.json'
+// import appointmentList from '../data.json'
 import AppointmentInfo from "./components/AppointmentInfo";
+import { useCallback, useEffect, useState } from "react";
+
 function App() {
+  let [appointmentList, setAppointmentList] = useState([]);
+
+  const fetchData = useCallback(() => {
+    fetch('./data.json')
+      .then((response) => response.json())
+      .then((data) => {
+        setAppointmentList(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
     <div>
       <Container>
@@ -20,7 +36,7 @@ function App() {
         </Row>
 
         <Row className="justify-content-center">
-          <AddAppointment/>
+          <AddAppointment />
         </Row>
 
         <Row className="justify-content-center">
@@ -34,15 +50,21 @@ function App() {
             <Card className="mb-3">
               <Card.Header>Appointment</Card.Header>
               <ListGroup variant="flush">
-                {appointmentList.map(appointment =>(
-                  <AppointmentInfo key={appointment.id} appointment={appointment}/>
+                {appointmentList.map((appointment) => (
+                  <AppointmentInfo
+                    key={appointment.id}
+                    appointment={appointment}
+                    onDeleteAppointment={appointmentId =>
+                      setAppointmentList(appointmentList.filter(
+                        appointment => appointment.id !== appointmentId
+                      ))
+                    }
+                  />
                 ))}
               </ListGroup>
-
             </Card>
           </Col>
         </Row>
-        
       </Container>
     </div>
   );

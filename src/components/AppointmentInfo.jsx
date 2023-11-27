@@ -1,5 +1,10 @@
-import {ListGroup} from "react-bootstrap";
-const AppointmentInfo = ({appointment}) => {
+import {Button, ListGroup} from "react-bootstrap";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
+
+
+
+const AppointmentInfo = ({appointment, onDeleteAppointment}) => {
   return (
     <>
       <ListGroup.Item>
@@ -15,6 +20,7 @@ const AppointmentInfo = ({appointment}) => {
         <p>
           <strong>aptNotes: {appointment.aptDate}</strong>
         </p>
+        <Button onClick={() => onDeleteAppointment(appointment.id)} size="sm" variant="danger"><RiDeleteBin6Line/>Delete</Button>
       </ListGroup.Item>
     </>
   );
