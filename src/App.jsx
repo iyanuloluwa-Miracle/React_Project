@@ -9,10 +9,28 @@ import AppointmentInfo from "./components/AppointmentInfo";
 import { useCallback, useEffect, useState } from "react";
 
 function App() {
-  let [appointmentList, setAppointmentList] = useState([]);
+  const [appointmentList, setAppointmentList] = useState([]);
+  const [query, setQuery] = useState("");
+  const [sortBy, setSortBy] = useState("firstName");
+  const [orderBy, setOrderBy] = useState("asc");
+
+  const filteredAppointments = appointmentList
+    .filter((item) => {
+      return (
+        item.firstName.toLowerCase().includes(query.toLocaleLowerCase()) ||
+        item.lastName.toLowerCase().includes(query.toLocaleLowerCase()) ||
+        item.aptNotes.toLowerCase().includes(query.toLocaleLowerCase())
+      );
+    })
+    .sort((a, b) => {
+      let order = orderBy === "asc" ? 1 : -1;
+      return a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
+        ? -1 * order
+        : 1 * order;
+    });
 
   const fetchData = useCallback(() => {
-    fetch('./data.json')
+    fetch("./data.json")
       .then((response) => response.json())
       .then((data) => {
         setAppointmentList(data);
@@ -41,8 +59,17 @@ function App() {
 
         <Row className="justify-content-center">
           <Col md="4">
-            <Search />
+            <Search
+              query={query}
+              onQueryChange={(myQuery) => setQuery(myQuery)}
+              orderBy={orderBy}
+              onOrderByChange={mySort => setOrderBy(mySort)}
+              sortBy={sortBy}
+              onSortByChange={mySort => setSortBy(mySort)}
+              
+            />
           </Col>
+
         </Row>
 
         <Row className="justify-content-center">
@@ -50,14 +77,16 @@ function App() {
             <Card className="mb-3">
               <Card.Header>Appointment</Card.Header>
               <ListGroup variant="flush">
-                {appointmentList.map((appointment) => (
+                {filteredAppointments.map((appointment) => (
                   <AppointmentInfo
                     key={appointment.id}
                     appointment={appointment}
-                    onDeleteAppointment={appointmentId =>
-                      setAppointmentList(appointmentList.filter(
-                        appointment => appointment.id !== appointmentId
-                      ))
+                    onDeleteAppointment={(appointmentId) =>
+                      setAppointmentList(
+                        appointmentList.filter(
+                          (appointment) => appointment.id !== appointmentId
+                        )
+                      )
                     }
                   />
                 ))}
