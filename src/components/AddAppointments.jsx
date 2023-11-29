@@ -15,19 +15,19 @@ const AddAppointment = ( {onSendAppointment, lastId}) => {
   const [formData, setFormData] = useState(clearData)
 
 
-  function formDataPublish(){
-    const AppointmentInfo = {
+  function formDataPublish() {
+    const appointmentInfo = {
       id: lastId + 1,
       firstName: formData.firstName,
       lastName: formData.lastName,
-      aptDate: formData.aptDate + '' + formData.aptTime,
+      aptDate: formData.aptDate + ' ' + formData.aptTime,
       aptNotes: formData.aptNotes
-
-    }
+    };
     onSendAppointment(appointmentInfo);
-    setFormData(clearData)
-    setToggleForm(!toggleForm)
+    setFormData(clearData);
+    setToggleForm(!toggleForm);
   }
+  
 
 
   return (

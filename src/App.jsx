@@ -1,12 +1,11 @@
+import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BsCalendar2Check } from "react-icons/bs";
 import { Container, Row, Col, Card, ListGroup } from "react-bootstrap";
 import Search from "./components/Search";
 import AddAppointment from "./components/AddAppointments";
-// import appointmentList from '../data.json'
 import AppointmentInfo from "./components/AppointmentInfo";
-import { useCallback, useEffect, useState } from "react";
 
 function App() {
   const [appointmentList, setAppointmentList] = useState([]);
@@ -17,9 +16,9 @@ function App() {
   const filteredAppointments = appointmentList
     .filter((item) => {
       return (
-        item.firstName.toLowerCase().includes(query.toLocaleLowerCase()) ||
-        item.lastName.toLowerCase().includes(query.toLocaleLowerCase()) ||
-        item.aptNotes.toLowerCase().includes(query.toLocaleLowerCase())
+        item.firstName.toLowerCase().includes(query.toLowerCase()) ||
+        item.lastName.toLowerCase().includes(query.toLowerCase()) ||
+        item.aptNotes.toLowerCase().includes(query.toLowerCase())
       );
     })
     .sort((a, b) => {
@@ -59,8 +58,7 @@ function App() {
               setAppointmentList([...appointmentList, myAppointment])
             }
             lastId={appointmentList.reduce(
-              (max, item) => (Number(item.id) > max ? Number(item.id) : max,0)
-              
+              (max, item) => (Number(item.id) > max ? Number(item.id) : max), 0
             )}
           />
         </Row>
