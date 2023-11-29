@@ -54,7 +54,15 @@ function App() {
         </Row>
 
         <Row className="justify-content-center">
-          <AddAppointment />
+          <AddAppointment
+            onSendAppointment={(myAppointment) =>
+              setAppointmentList([...appointmentList, myAppointment])
+            }
+            lastId={appointmentList.reduce(
+              (max, item) => (Number(item.id) > max ? Number(item.id) : max,0)
+              
+            )}
+          />
         </Row>
 
         <Row className="justify-content-center">
@@ -63,13 +71,11 @@ function App() {
               query={query}
               onQueryChange={(myQuery) => setQuery(myQuery)}
               orderBy={orderBy}
-              onOrderByChange={mySort => setOrderBy(mySort)}
+              onOrderByChange={(mySort) => setOrderBy(mySort)}
               sortBy={sortBy}
-              onSortByChange={mySort => setSortBy(mySort)}
-              
+              onSortByChange={(mySort) => setSortBy(mySort)}
             />
           </Col>
-
         </Row>
 
         <Row className="justify-content-center">

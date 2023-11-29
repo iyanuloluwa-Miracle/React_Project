@@ -1,7 +1,8 @@
-import { FormControl, InputGroup, Dropdown } from "react-bootstrap";
-import { BsCheck2 } from "react-icons/bs";
+import React from "react";
+import { FormControl, InputGroup, Dropdown, DropdownDivider } from "react-bootstrap";
+import { FaCheck } from "react-icons/fa";
 
-const DropDown = ({sortBy, onSortByChange, orderBy, onQueryChange}) => {
+const DropDown = ({ sortBy, onSortByChange, orderBy, onOrderByChange }) => {
   return (
     <>
       <Dropdown>
@@ -10,14 +11,48 @@ const DropDown = ({sortBy, onSortByChange, orderBy, onQueryChange}) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1" onClick={() => onSortByChange("firstName") && <BsCheck2 className="float-end"/>}>First Name{((sortBy == 'firstName')}</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-1"
+            onClick={() => onSortByChange("firstName")}
+          >
+            First Name {sortBy === "firstName" && <FaCheck className="float-end" />}
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-1"
+            onClick={() => onSortByChange("lastName")}
+          >
+            Last Name {sortBy == "lastName" && <FaCheck className="float-end" />}
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-1"
+            onClick={() => onSortByChange("aptDate")}
+          >
+            Date {sortBy == "aptDate" && <FaCheck className="float-end" />}
+          </Dropdown.Item>
+
+          <DropdownDivider/>
+
+          <Dropdown.Item
+            href="#"
+            onClick={() => onOrderByChange("asc")}
+          >
+            ASC {orderBy == "asc" && <FaCheck className="float-end" />}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            href="#"
+            onClick={() => onOrderByChange("desc")}
+          >
+            DSC {orderBy == "desc" && <FaCheck className="float-end" />}
+          </Dropdown.Item>
+          
+          
         </Dropdown.Menu>
       </Dropdown>
     </>
   );
 };
+
 const Search = ({
   query,
   onQueryChange,
@@ -36,12 +71,7 @@ const Search = ({
           }}
           value={query}
         />
-        <DropDown
-          sortBy={sortBy}
-          onSortByChange={(mySort) => onSortByChange(mySort)}
-          orderBy={orderBy}
-          onOrderByChange={(myOrder) => onOrderByChange(myOrder)}
-        />
+        <DropDown sortBy={sortBy} onSortByChange={(mySort) => onSortByChange(mySort)} />
       </InputGroup>
     </>
   );
